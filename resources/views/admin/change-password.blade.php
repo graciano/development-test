@@ -16,15 +16,15 @@
                     @endif
                     <form action="" method="POST">
                         {!! csrf_field() !!}
-                        <label for="current-password">Senha atual</label>
+                        <label for="current-password">Current Password</label>
                         <input type="password" name="current_password">
                         <br>
                         <br>
-                        <label for="new-password">Nova senha</label>
+                        <label for="new-password">New Password</label>
                         <input type="password" name="new_password">
                         <br>
                         <br>
-                        <label for="cofirm-password">Confirmar nova senha</label>
+                        <label for="cofirm-password">Confirm new password</label>
                         <input type="password" name="new_password_confirmation">
                         <br>
                         <br>

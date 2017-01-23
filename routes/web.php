@@ -37,3 +37,5 @@ Route::group(['prefix' => 'admin'], function () {
   
   Route::get('', 'Admin\HomeController@showHome')->name('admin');
 });
+
+Route::resource('admin/product', 'Admin\ProductController');

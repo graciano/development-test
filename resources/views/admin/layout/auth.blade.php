@@ -69,6 +69,9 @@
                                         {{ csrf_field() }}
                                     </form>
                                 </li>
+                                <li>
+                                    <a href="{{ route('admin.change-password') }}">Change password</a>
+                                </li>
                             </ul>
                         </li>
                     @endif

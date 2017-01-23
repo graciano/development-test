@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Admin;
+use App\Model\Product;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(AdminTableSeeder::class);
+        $this->call(ProductTableSeeder::class);
     }
 }
 
@@ -31,3 +33,20 @@ class AdminTableSeeder extends Seeder
     }
 }
 
+class ProductTableSeeder extends Seeder
+{
+
+    public function run()
+    {
+        //creating 30 random products
+        $faker = Faker\Factory::create();
+        for ($i=0; $i < 30; $i++) {
+            Product::create([
+                            'name' => $faker->word,
+                            'description' => $faker->sentence(6, true),
+                            'price' => $faker->randomFloat(2, 0, 5000),
+                            'stock' => $faker->numberBetween(0, 1000),
+                            ]);
+        }
+    }
+}
