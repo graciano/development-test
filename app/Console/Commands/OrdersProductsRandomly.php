@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use App\Model\Product;
 use App\Model\Order;
 use App\Model\OrderItem;
@@ -73,5 +74,10 @@ class OrdersProductsRandomly extends Command
             $order->save();
         });
         $this->info('finished ordering randomly');  
+        Cache::put(
+                     'all-orders',
+                     Order::all()->load('items', 'items.product'),
+                     30 //minutes, schedule interval of this very task
+                     );
     }
 }

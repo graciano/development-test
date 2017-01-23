@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Order;
+use Illuminate\Support\Facades\Cache;
 
 class OrderController extends Controller
 {
@@ -15,7 +16,14 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all()->load('items', 'items.product');
+        if(!Cache::has('all-orders')){
+            Cache::put(
+                     'all-orders',
+                     Order::all()->load('items', 'items.product'),
+                     30 //minutes, schedule interval of this very task
+                     );
+        }
+        $orders = Cache::get('all-orders');
         return view('admin.order.list')->with('orders', $orders);
     }
 
