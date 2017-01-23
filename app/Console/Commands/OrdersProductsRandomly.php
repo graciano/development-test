@@ -49,7 +49,7 @@ class OrdersProductsRandomly extends Command
                                 'email' => $faker->email,
                                 'name' => $faker->name,
                                 'phone' => $faker->phoneNumber,
-                                'address' => $faker->address,
+                                'address' => "$faker->streetName, ".$faker->numberBetween(1, 2000),
                                 'city' => $faker->city,
                                 'state' =>$faker->state,
                                 'country' => $faker->country,
@@ -76,7 +76,7 @@ class OrdersProductsRandomly extends Command
         $this->info('finished ordering randomly');  
         Cache::put(
                      'all-orders',
-                     Order::all()->load('items', 'items.product'),
+                     Order::orderBy('created_at','desc')->get()->load('items', 'items.product'),
                      30 //minutes, schedule interval of this very task
                      );
     }

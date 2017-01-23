@@ -16,10 +16,11 @@ class OrderController extends Controller
      */
     public function index()
     {
+        //if it's not cached, create cache again
         if(!Cache::has('all-orders')){
             Cache::put(
                      'all-orders',
-                     Order::all()->load('items', 'items.product'),
+                     Order::orderBy('created_at','desc')->get()->load('items', 'items.product'),
                      30 //minutes, schedule interval of this very task
                      );
         }
