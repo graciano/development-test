@@ -178,6 +178,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //added by @graciano
+        Barryvdh\Debugbar\ServiceProvider::class,
+
     ],
 
     /*
