@@ -39,3 +39,4 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::resource('admin/product', 'Admin\ProductController');
+Route::get('admin/order', 'Admin\OrderController@index')->name('order.index');

@@ -58,15 +58,20 @@ class OrdersProductsRandomly extends Command
             $total_price = 0;
             foreach($products as $product){
                 $item = new OrderItem();
-                $item->product_id = $product->id;
-                $item->order_id = $order->id;
+                $item->product()->associate($product);
+                $item->order()->associate($order);
                 $item->quantity = $faker->numberBetween(1,10);
+
+                $product->stock -= $item->quantity;
+                $product->save();
+                
                 $item->subtotal = $product->price * $item->quantity;
                 $total_price += $item->subtotal;
                 $item->save();
             }
             $order->total_price = $total_price;
             $order->save();
-        });        
+        });
+        $this->info('finished ordering randomly');  
     }
 }

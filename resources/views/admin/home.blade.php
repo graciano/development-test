@@ -10,6 +10,8 @@
                 <div class="panel-body">
                     <div class="links">
                         <a href="{{ route('product.index') }}">Products</a>
+                        <br>
+                        <a href="{{ route('order.index') }}">Orders</a>
                     </div>
                 </div>
             </div>
