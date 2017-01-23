@@ -38,9 +38,9 @@ class ProductTableSeeder extends Seeder
 
     public function run()
     {
-        //creating 30 random products
+        //creating 10 random products
         $faker = Faker\Factory::create();
-        for ($i=0; $i < 30; $i++) {
+        for ($i=0; $i < 10; $i++) {
             Product::create([
                             'name' => $faker->word,
                             'description' => $faker->sentence(6, true),
