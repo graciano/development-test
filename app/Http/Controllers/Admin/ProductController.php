@@ -102,7 +102,9 @@ class ProductController extends AdminBaseController
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return "Produto deletado. <a href='".route('product.index')."'>voltar.</a>.";
+        return redirect(route('product.index'))
+               ->with('deleted-message',
+                      "Product $product->name deleted successfully.");
     }
 
     private function validationRules(){

@@ -44,19 +44,21 @@ class OrdersProductsRandomly extends Command
         \DB::transaction(function () {
             $faker = \Faker\Factory::create();
             $numberOfProducts = $faker->numberBetween(1,5);
-            $products = Product::inRandomOrder()->limit($numberOfProducts)->get();
+            $products = Product::inRandomOrder()
+                                ->limit($numberOfProducts)  
+                                ->get();
             $order = new Order([
                                 'email' => $faker->email,
                                 'name' => $faker->name,
                                 'phone' => $faker->phoneNumber,
-                                'address' => "$faker->streetName, ".$faker->numberBetween(1, 2000),
+                                'address' => "$faker->streetName, "
+                                        .$faker->numberBetween(1, 2000),
                                 'city' => $faker->city,
                                 'state' =>$faker->state,
                                 'country' => $faker->country,
                                ]);
             $order->total_price = 0;
             $order->save();
-            $total_price = 0;
             foreach($products as $product){
                 $item = new OrderItem();
                 $item->product()->associate($product);
@@ -67,16 +69,17 @@ class OrdersProductsRandomly extends Command
                 $product->save();
                 
                 $item->subtotal = $product->price * $item->quantity;
-                $total_price += $item->subtotal;
+                $order->total_price += $item->subtotal;
                 $item->save();
             }
-            $order->total_price = $total_price;
             $order->save();
         });
         $this->info('finished ordering randomly');  
         Cache::put(
                      'all-orders',
-                     Order::orderBy('created_at','desc')->get()->load('items', 'items.product'),
+                     Order::orderBy('created_at','desc')
+                            ->get()
+                            ->load('items', 'items.product'),
                      30 //minutes, schedule interval of this very task
                      );
     }

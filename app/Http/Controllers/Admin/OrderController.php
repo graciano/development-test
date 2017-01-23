@@ -20,7 +20,9 @@ class OrderController extends Controller
         if(!Cache::has('all-orders')){
             Cache::put(
                      'all-orders',
-                     Order::orderBy('created_at','desc')->get()->load('items', 'items.product'),
+                     Order::orderBy('created_at','desc')
+                            ->get()
+                            ->load('items', 'items.product'),
                      30 //minutes, schedule interval of this very task
                      );
         }

@@ -8,6 +8,9 @@
                 <div class="panel-heading">Products</div>
 
                 <div class="panel-body">
+                    @if(session('deleted-message'))
+                        <p class="text text-danger">{{ session('deleted-message') }}</p>
+                    @endif
                     <div class="links">
                         <a href="{{ route('product.create') }}" class="btn btn-primary">New Product</a>
                     </div>

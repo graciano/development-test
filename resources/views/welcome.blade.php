@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="{{ route('admin') }}">Admin area (products CRUD)</a>
+                    <a href="{{ route('admin') }}">Admin area (products CRUD/view orders)</a>
                     <a href="https://laravel.com/docs/5.3">Laravel 5.3 docs</a>
                     <a href="https://github.com/graciano/development-test">GitHub from this fork</a>
                 </div>
