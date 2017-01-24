@@ -41,29 +41,37 @@ class OrdersProductsRandomly extends Command
      */
     public function handle()
     {
-        \DB::transaction(function () {
-            $faker = \Faker\Factory::create();
-            $numberOfProducts = $faker->numberBetween(1,5);
-            $products = Product::inRandomOrder()
-                                ->limit($numberOfProducts)  
-                                ->get();
-            $order = new Order([
-                                'email' => $faker->email,
-                                'name' => $faker->name,
-                                'phone' => $faker->phoneNumber,
-                                'address' => "$faker->streetName, "
-                                        .$faker->numberBetween(1, 2000),
-                                'city' => $faker->city,
-                                'state' =>$faker->state,
-                                'country' => $faker->country,
-                               ]);
+        $faker = \Faker\Factory::create();
+        $numberOfProducts = $faker->numberBetween(1,5);
+        $products = Product::where('stock', '>', 0)
+                            ->orderByRaw('RAND()')
+                            ->take($numberOfProducts)  
+                            ->get();
+        $order = new Order([
+                            'email' => $faker->email,
+                            'name' => $faker->name,
+                            'phone' => $faker->phoneNumber,
+                            'address' => "$faker->streetName, "
+                                    .$faker->numberBetween(1, 2000),
+                            'city' => $faker->city,
+                            'state' =>$faker->state,
+                            'country' => $faker->country,
+                           ]);
+        $this->info("Trying to order ".$products->count()." products:");
+        if($products->count() ==0)
+            $this->error("No products in stock.");
+        foreach($products as $product){
+            $this->info("\t product: $product->id, $product->name");
+        }
+
+        \DB::transaction(function () use($faker, $products, $order) {
             $order->total_price = 0;
             $order->save();
             foreach($products as $product){
                 $item = new OrderItem();
                 $item->product()->associate($product);
                 $item->order()->associate($order);
-                $item->quantity = $faker->numberBetween(1,10);
+                $item->quantity = $faker->numberBetween(1,$product->stock);
 
                 $product->stock -= $item->quantity;
                 $product->save();
